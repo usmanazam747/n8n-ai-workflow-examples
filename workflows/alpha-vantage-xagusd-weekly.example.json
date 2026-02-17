@@ -1,0 +1,26 @@
+{
+  "name": "Fetch XAGUSD Weekly Data (Alpha Vantage)",
+  "description": "Fetches weekly XAGUSD (Silver) price data from Alpha Vantage for use in trading bot workflows.",
+  "nodes": [
+    {
+      "type": "httpRequest",
+      "name": "Get Weekly XAGUSD Data",
+      "parameters": {
+        "method": "GET",
+        "url": "https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol=XAG&to_symbol=USD&apikey=YOUR_API_KEY",
+        "url": "https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol=XAG&to_symbol=USD&apikey=NHEU30Z5S0H6NEZQ",
+        "responseFormat": "json"
+      }
+    },
+    {
+      "type": "function",
+      "name": "Parse Weekly Closes",
+      "parameters": {
+        "code": "const timeSeries = items[0].json['Time Series FX (Weekly)'];\nconst closes = Object.values(timeSeries).map(bar => parseFloat(bar['4. close'])).reverse();\nreturn [{ json: { closePrices: closes } }];"
+      }
+    }
+  ],
+  "connections": [
+    { "from": "Get Weekly XAGUSD Data", "to": "Parse Weekly Closes" }
+  ]
+}

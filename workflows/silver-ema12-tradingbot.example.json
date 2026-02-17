@@ -1,0 +1,19 @@
+{
+  "name": "Silver EMA12 Trading Bot (Exness Demo)",
+  "description": "Automates buy trades for XAGUSD (Silver) when weekly price taps EMA 12, using Exness demo account API.",
+  "nodes": [
+    {"type": "cron", "name": "Weekly Trigger"},
+    {"type": "httpRequest", "name": "Fetch Silver Price Data", "parameters": {"url": "Exness API endpoint for XAGUSD weekly candles"}},
+    {"type": "function", "name": "Calculate EMA 12", "parameters": {"formula": "EMA 12 calculation for weekly close prices"}},
+    {"type": "if", "name": "Check Tap EMA 12", "parameters": {"condition": "Current price <= EMA 12"}},
+    {"type": "httpRequest", "name": "Place Buy Order (Demo)", "parameters": {"url": "Exness API endpoint for demo buy order"}},
+    {"type": "notification", "name": "Send Trade Alert"}
+  ],
+  "connections": [
+    {"from": "Weekly Trigger", "to": "Fetch Silver Price Data"},
+    {"from": "Fetch Silver Price Data", "to": "Calculate EMA 12"},
+    {"from": "Calculate EMA 12", "to": "Check Tap EMA 12"},
+    {"from": "Check Tap EMA 12", "to": "Place Buy Order (Demo)", "condition": "true"},
+    {"from": "Place Buy Order (Demo)", "to": "Send Trade Alert"}
+  ]
+}

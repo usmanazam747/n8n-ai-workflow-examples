@@ -1,0 +1,19 @@
+{
+  "name": "Real Estate Listings Centralization",
+  "description": "Syncs property listings from multiple sources into a centralized database, enriches data using AI, and sends notifications to relevant teams.",
+  "nodes": [
+    {"type": "httpRequest", "name": "Fetch Listings from Source A"},
+    {"type": "httpRequest", "name": "Fetch Listings from Source B"},
+    {"type": "merge", "name": "Merge Listings"},
+    {"type": "aiNode", "name": "Enrich Data with AI"},
+    {"type": "database", "name": "Update Central Database"},
+    {"type": "notification", "name": "Send Update Notification"}
+  ],
+  "connections": [
+    {"from": "Fetch Listings from Source A", "to": "Merge Listings"},
+    {"from": "Fetch Listings from Source B", "to": "Merge Listings"},
+    {"from": "Merge Listings", "to": "Enrich Data with AI"},
+    {"from": "Enrich Data with AI", "to": "Update Central Database"},
+    {"from": "Update Central Database", "to": "Send Update Notification"}
+  ]
+}

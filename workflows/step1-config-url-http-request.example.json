@@ -1,0 +1,25 @@
+{
+  "name": "Step 1 - Configurable URL to HTTP Request",
+  "description": "Demonstrates using a Function node to build the Alpha Vantage URL from config.json, then passing it to an HTTP Request node.",
+  "nodes": [
+    {
+      "type": "function",
+      "name": "Build Alpha Vantage URL",
+      "parameters": {
+        "code": "const fs = require('fs');\nconst path = require('path');\nconst configPath = path.join(__dirname, '..', 'config.json');\nconst config = JSON.parse(fs.readFileSync(configPath, 'utf8'));\nconst apiKey = config.alphaVantageApiKey;\nconst url = `https://www.alphavantage.co/query?function=FX_WEEKLY&from_symbol=XAG&to_symbol=USD&apikey=${apiKey}`;\nreturn [{ json: { url } }];"
+      }
+    },
+    {
+      "type": "httpRequest",
+      "name": "Get Weekly XAGUSD Data",
+      "parameters": {
+        "method": "GET",
+        "url": "={{$json[\"url\"]}}",
+        "responseFormat": "json"
+      }
+    }
+  ],
+  "connections": [
+    { "from": "Build Alpha Vantage URL", "to": "Get Weekly XAGUSD Data" }
+  ]
+}

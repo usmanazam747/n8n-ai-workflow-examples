@@ -1,0 +1,9 @@
+# n8n AI Workflow Examples .gitignore
+node_modules/
+.env
+.DS_Store
+*.log
+__pycache__/
+.vscode/
+workflows/*.local.json
+resources/*.tmp
